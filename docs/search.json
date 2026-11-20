@@ -1,0 +1,233 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Lab 5: Count Regression",
+    "section": "",
+    "text": "The outcome is the number of physician office visits. Predictors are the number of chronic conditions, self-perceived health, gender, years of education, and private insurance coverage.\nThe reference groups are average health, male, and no insurance.\n\n\n\n\n\n\n\n\n\n\n\nDescriptive Statistics for Physician Office Visits\n\n\nN\nMean\nVariance\nProportion of zeros\nMaximum\n\n\n\n\n4,406\n5.774\n45.687\n0.155\n89\n\n\n\n\n\n\n\n\n\n\n\n\nDistribution of physician office visits.\n\n\n\n\nPhysician office visits are a count outcome: values are non-negative whole numbers. Among 4406 respondents, the mean number of visits was 5.77, and the variance was 45.69. The variance-to-mean ratio was 7.91. Overall, 15.5% of respondents reported no visits, and the maximum was 89 visits."
+  },
+  {
+    "objectID": "index.html#load-packages-and-prepare-the-data",
+    "href": "index.html#load-packages-and-prepare-the-data",
+    "title": "Lab 5: Count Regression",
+    "section": "",
+    "text": "The outcome is the number of physician office visits. Predictors are the number of chronic conditions, self-perceived health, gender, years of education, and private insurance coverage.\nThe reference groups are average health, male, and no insurance."
+  },
+  {
+    "objectID": "index.html#explore-the-data",
+    "href": "index.html#explore-the-data",
+    "title": "Lab 5: Count Regression",
+    "section": "",
+    "text": "Descriptive Statistics for Physician Office Visits\n\n\nN\nMean\nVariance\nProportion of zeros\nMaximum\n\n\n\n\n4,406\n5.774\n45.687\n0.155\n89\n\n\n\n\n\n\n\n\n\n\n\n\nDistribution of physician office visits.\n\n\n\n\nPhysician office visits are a count outcome: values are non-negative whole numbers. Among 4406 respondents, the mean number of visits was 5.77, and the variance was 45.69. The variance-to-mean ratio was 7.91. Overall, 15.5% of respondents reported no visits, and the maximum was 89 visits."
+  },
+  {
+    "objectID": "index.html#why-not-a-linear-model",
+    "href": "index.html#why-not-a-linear-model",
+    "title": "Lab 5: Count Regression",
+    "section": "Why not a linear model?",
+    "text": "Why not a linear model?\n\n\n\n\n\nDHARMa residual diagnostics for the Gaussian model.\n\n\n\n\nThe Gaussian model showed substantial lack of fit. The DHARMa QQ plot strayed far from the diagonal, and the uniformity and outlier tests were significant. The residual-versus-predicted plot also showed systematic quantile deviations, indicating that the residual distribution varied across fitted values. Even though the dispersion test was not significant, this did not resolve the other diagnostic problems. A Gaussian model also assigns probability to negative and non-integer outcomes, whereas physician visits are non-negative counts, and its constant conditional variance assumption may be unsuitable for this outcome. These findings motivate evaluating count-regression models."
+  },
+  {
+    "objectID": "index.html#specify-three-nested-poisson-models",
+    "href": "index.html#specify-three-nested-poisson-models",
+    "title": "Lab 5: Count Regression",
+    "section": "Specify three nested Poisson models",
+    "text": "Specify three nested Poisson models"
+  },
+  {
+    "objectID": "index.html#compare-the-poisson-models",
+    "href": "index.html#compare-the-poisson-models",
+    "title": "Lab 5: Count Regression",
+    "section": "Compare the Poisson models",
+    "text": "Compare the Poisson models\n\n\n\n\n\n\n\n\nComparison of Nested Poisson Models\n\n\nModel\nDf\nAIC\nBIC\nlogLik\ndeviance\nChisq\nChi Df\nPr(&gt;Chisq)\n\n\n\n\nm0_pois\n1\n39720.34\n39726.73\n-19859.17\n39718.34\nNA\nNA\nNA\n\n\nm1_pois\n2\n37546.91\n37559.69\n-18771.46\n37542.91\n2175.4279\n1\n0.000000e+00\n\n\nm2_pois\n7\n36596.99\n36641.72\n-18291.49\n36582.99\n959.9239\n5\n2.849021e-205"
+  },
+  {
+    "objectID": "index.html#simulate-residuals",
+    "href": "index.html#simulate-residuals",
+    "title": "Lab 5: Count Regression",
+    "section": "Simulate residuals",
+    "text": "Simulate residuals\n\n\n\n\n\nDHARMa residual diagnostics for the full Poisson model."
+  },
+  {
+    "objectID": "index.html#test-for-dispersion-and-excess-zeros",
+    "href": "index.html#test-for-dispersion-and-excess-zeros",
+    "title": "Lab 5: Count Regression",
+    "section": "Test for dispersion and excess zeros",
+    "text": "Test for dispersion and excess zeros\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    DHARMa nonparametric dispersion test via sd of residuals fitted vs.\n    simulated\n\ndata:  simulationOutput\ndispersion = 7.2457, p-value &lt; 2.2e-16\nalternative hypothesis: two.sided\n\n\n\n    DHARMa zero-inflation test via comparison to expected zeros with\n    simulation under H0 = fitted model\n\ndata:  simulationOutput\nratioObsSim = 14.906, p-value &lt; 2.2e-16\nalternative hypothesis: two.sided"
+  },
+  {
+    "objectID": "index.html#interpret-the-poisson-diagnostics",
+    "href": "index.html#interpret-the-poisson-diagnostics",
+    "title": "Lab 5: Count Regression",
+    "section": "Interpret the Poisson diagnostics",
+    "text": "Interpret the Poisson diagnostics\nThe full Poisson model showed significant overdispersion (DHARMa dispersion ratio = 7.25, p &lt; .001). The observed number of zeros was 14.91 times the number expected under the fitted model (p &lt; .001). These results indicate that the Poisson model does not adequately capture the variability and zeros in the outcome. Overdispersion can lead to underestimated standard errors, overly narrow confidence intervals, and overly small p-values. However, excess zeros relative to the Poisson model do not necessarily imply a separate zero-generating process. A negative binomial model will therefore be evaluated before considering a zero-inflated or hurdle model."
+  },
+  {
+    "objectID": "index.html#estimate-the-nb2-model",
+    "href": "index.html#estimate-the-nb2-model",
+    "title": "Lab 5: Count Regression",
+    "section": "Estimate the NB2 model",
+    "text": "Estimate the NB2 model"
+  },
+  {
+    "objectID": "index.html#compare-the-poisson-and-nb2-models",
+    "href": "index.html#compare-the-poisson-and-nb2-models",
+    "title": "Lab 5: Count Regression",
+    "section": "Compare the Poisson and NB2 models",
+    "text": "Compare the Poisson and NB2 models\n\n\n\n\n\n\n\n\nComparison of Full Poisson and Negative Binomial Models\n\n\nModel\nDf\nAIC\nBIC\nlogLik\ndeviance\nChisq\nChi Df\nPr(&gt;Chisq)\n\n\n\n\nm2_pois\n7\n36596.99\n36641.72\n-18291.49\n36582.99\nNA\nNA\nNA\n\n\nm_nb\n8\n24469.91\n24521.03\n-12226.95\n24453.91\n12129.08\n1\n0"
+  },
+  {
+    "objectID": "index.html#re-check-the-nb2-model-with-dharma",
+    "href": "index.html#re-check-the-nb2-model-with-dharma",
+    "title": "Lab 5: Count Regression",
+    "section": "Re-check the NB2 model with DHARMa",
+    "text": "Re-check the NB2 model with DHARMa\n\n\n\n\n\nDHARMa residual diagnostics for the NB2 model.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    DHARMa nonparametric dispersion test via sd of residuals fitted vs.\n    simulated\n\ndata:  simulationOutput\ndispersion = 1.0456, p-value = 0.392\nalternative hypothesis: two.sided\n\n\n\n    DHARMa zero-inflation test via comparison to expected zeros with\n    simulation under H0 = fitted model\n\ndata:  simulationOutput\nratioObsSim = 1.1044, p-value = 0.004\nalternative hypothesis: two.sided\n\n\nThe NB2 model fit significantly better than the full Poisson model, χ²(1) = 1.212908^{4}, p &lt; .001. The comparison has one degree of freedom because NB2 estimates an additional dispersion parameter. The NB2 dispersion test was not significant (ratio = 1.05, p = 0.392), indicating that the previously detected overdispersion was no longer clear on this diagnostic. So, the Poisson model’s restrictive variance assumption was not supported, and its conventional standard errors and significance tests should not be relied on for inference.\nHowever, the NB2 model continued to under predict zeros (observed/expected ratio = 1.1, p = 0.004). Although this mismatch was much smaller than under Poisson, the observed number of zeros remained approximately 10.44% greater than expected. So, Zero-inflated and hurdle negative binomial models will be evaluated."
+  },
+  {
+    "objectID": "index.html#visualize-predicted-counts",
+    "href": "index.html#visualize-predicted-counts",
+    "title": "Lab 5: Count Regression",
+    "section": "Visualize predicted counts",
+    "text": "Visualize predicted counts\n\n\n\n\n\nPredicted physician visits by number of chronic conditions under NB2.\n\n\n\n\nThe predicted relationship curves because the NB2 model uses a log link, which makes the predicted relationship curved on the count scale. A one-unit increase in chronic conditions adds a constant amount to the log expected count, corresponding to a multiplicative change in the expected number of visits."
+  },
+  {
+    "objectID": "index.html#decide-whether-to-investigate-a-separate-process-for-zeros",
+    "href": "index.html#decide-whether-to-investigate-a-separate-process-for-zeros",
+    "title": "Lab 5: Count Regression",
+    "section": "Decide whether to investigate a separate process for zeros",
+    "text": "Decide whether to investigate a separate process for zeros\nThe NB2 model heavily improved on the Poisson model, but it still under predicted the number of zeros. Its observed-to-expected zero ratio was 1.1, with p = 0.004. So, zero-inflated and hurdle negative binomial models were fitted for comparison with NB2."
+  },
+  {
+    "objectID": "index.html#fit-the-zero-inflated-negative-binomial-model",
+    "href": "index.html#fit-the-zero-inflated-negative-binomial-model",
+    "title": "Lab 5: Count Regression",
+    "section": "Fit the zero-inflated negative binomial model",
+    "text": "Fit the zero-inflated negative binomial model"
+  },
+  {
+    "objectID": "index.html#fit-the-hurdle-negative-binomial-model",
+    "href": "index.html#fit-the-hurdle-negative-binomial-model",
+    "title": "Lab 5: Count Regression",
+    "section": "Fit the hurdle negative binomial model",
+    "text": "Fit the hurdle negative binomial model"
+  },
+  {
+    "objectID": "index.html#compare-nb2-with-the-zero-inflated-model",
+    "href": "index.html#compare-nb2-with-the-zero-inflated-model",
+    "title": "Lab 5: Count Regression",
+    "section": "Compare NB2 with the zero-inflated model",
+    "text": "Compare NB2 with the zero-inflated model\n\n\nData: data\nModels:\nm_nb: visits ~ chronic + health + gender + school + insurance, zi=~0, disp=~1\nm_zinb: visits ~ chronic + health + gender + school + insurance, zi=~chronic + health + gender + school + insurance, disp=~1\n       Df   AIC   BIC logLik deviance  Chisq Chi Df Pr(&gt;Chisq)    \nm_nb    8 24470 24521 -12227    24454                             \nm_zinb 15 24341 24437 -12155    24311 143.14      7  &lt; 2.2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1"
+  },
+  {
+    "objectID": "index.html#compare-all-three-models-using-aic-and-bic",
+    "href": "index.html#compare-all-three-models-using-aic-and-bic",
+    "title": "Lab 5: Count Regression",
+    "section": "Compare all three models using AIC and BIC",
+    "text": "Compare all three models using AIC and BIC\n\n\n\n\n\n\n\n\nAIC Comparison of Models\n\n\nModel\ndf\nAIC\n\n\n\n\nm_nb\n8\n24469.91\n\n\nm_zinb\n15\n24340.77\n\n\nm_hurdle\n15\n24330.41\n\n\n\n\n\n\n\n\n\n\n\n\n\nBIC Comparison of Models\n\n\nModel\ndf\nBIC\n\n\n\n\nm_nb\n8\n24521.03\n\n\nm_zinb\n15\n24436.63\n\n\nm_hurdle\n15\n24426.27"
+  },
+  {
+    "objectID": "index.html#evaluate-the-model-comparisons",
+    "href": "index.html#evaluate-the-model-comparisons",
+    "title": "Lab 5: Count Regression",
+    "section": "Evaluate the model comparisons",
+    "text": "Evaluate the model comparisons\nThe zero-inflated negative binomial model improved fit relative to NB2 in the likelihood-ratio comparison, χ²(7) = 143.14, p &lt; .001. This test involves a boundary case, so it was considered alongside the information criteria and residual diagnostics.\nBoth the zero-inflated and hurdle models had lower AIC and BIC than ordinary NB2. The hurdle model had the lowest AIC (2.433041^{4}) and BIC (2.442627^{4}). Therefore, it was selected for further diagnostic evaluation."
+  },
+  {
+    "objectID": "index.html#re-check-the-hurdle-model-with-dharma",
+    "href": "index.html#re-check-the-hurdle-model-with-dharma",
+    "title": "Lab 5: Count Regression",
+    "section": "Re-check the hurdle model with DHARMa",
+    "text": "Re-check the hurdle model with DHARMa\n\n\n\n\n\nDHARMa residual diagnostics for the hurdle negative binomial model.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    DHARMa nonparametric dispersion test via sd of residuals fitted vs.\n    simulated\n\ndata:  simulationOutput\ndispersion = 1.1477, p-value = 0.008\nalternative hypothesis: two.sided\n\n\n\n    DHARMa zero-inflation test via comparison to expected zeros with\n    simulation under H0 = fitted model\n\ndata:  simulationOutput\nratioObsSim = 0.99827, p-value = 0.984\nalternative hypothesis: two.sided\n\n\nThe hurdle negative binomial model reproduced the overall number of zeros well (observed/expected ratio = 0.998, p = 0.984). But, the dispersion test remained significant (ratio = 1.148, p = 0.008), indicating residual overdispersion. So, although the hurdle model had the lowest AIC and BIC among the candidates, its diagnostics did not indicate a fully adequate fit. I also examined the ZINB model before making the final model choice."
+  },
+  {
+    "objectID": "index.html#examine-zinb-diagnostics",
+    "href": "index.html#examine-zinb-diagnostics",
+    "title": "Lab 5: Count Regression",
+    "section": "Examine ZINB diagnostics",
+    "text": "Examine ZINB diagnostics\n\n\n\n\n\nDHARMa residual diagnostics for the ZINB model.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    DHARMa nonparametric dispersion test via sd of residuals fitted vs.\n    simulated\n\ndata:  simulationOutput\ndispersion = 1.1831, p-value &lt; 2.2e-16\nalternative hypothesis: two.sided\n\n\n\n    DHARMa zero-inflation test via comparison to expected zeros with\n    simulation under H0 = fitted model\n\ndata:  simulationOutput\nratioObsSim = 0.95735, p-value = 0.204\nalternative hypothesis: two.sided"
+  },
+  {
+    "objectID": "index.html#justify-my-choice-for-which-model-was-carried-forward",
+    "href": "index.html#justify-my-choice-for-which-model-was-carried-forward",
+    "title": "Lab 5: Count Regression",
+    "section": "Justify my choice for which model was carried forward",
+    "text": "Justify my choice for which model was carried forward\nThe hurdle negative binomial model was carried forward because it had the lowest AIC and BIC of the candidate models and reproduced the overall number of zeros well (observed/expected ratio = 0.998, p = 0.984). In contrast, ordinary NB2 continued to under predict zeros. The ZINB model also addressed the overall zero-count mismatch, but had higher AIC and BIC than the hurdle model.\nThe selected model nevertheless retained significant residual overdispersion (ratio = 1.148, p = 0.008) and its residuals differed significantly from the expected uniform distribution. The quantile diagnostic also issued a fitting warning, so its p-value was not relied upon. So, the hurdle model was the best-supported of the candidates considered, rather than a fully adequate description of the data. Later findings are interpreted with this limitation in mind."
+  },
+  {
+    "objectID": "index.html#state-the-prediction",
+    "href": "index.html#state-the-prediction",
+    "title": "Lab 5: Count Regression",
+    "section": "6.1 State the prediction",
+    "text": "6.1 State the prediction\nI predict that the positive association between chronic conditions and physician visits will be stronger for people with private insurance than among those without it. Private insurance could reduce financial barriers to seeking care which would allow increases in healthcare needs to translate into greater use of physician services. This prediction concerns the interaction in the model’s count component. The zero component is kept unchanged."
+  },
+  {
+    "objectID": "index.html#fit-the-interaction-model",
+    "href": "index.html#fit-the-interaction-model",
+    "title": "Lab 5: Count Regression",
+    "section": "6.2 Fit the interaction model",
+    "text": "6.2 Fit the interaction model"
+  },
+  {
+    "objectID": "index.html#test-whether-the-interaction-is-needed",
+    "href": "index.html#test-whether-the-interaction-is-needed",
+    "title": "Lab 5: Count Regression",
+    "section": "6.3 Test whether the interaction is needed",
+    "text": "6.3 Test whether the interaction is needed\nThe additive and interaction models were compared using a likelihood-ratio test. The zero component was identical in both models, so this comparison tests the addition of the chronic conditions × insurance interaction in the count component.\n\n\n\n\n\n\n\n\nLikelihood-Ratio Test of the Interaction\n\n\nModel\nDf\nAIC\nBIC\nlogLik\ndeviance\nChisq\nChi Df\nPr(&gt;Chisq)\n\n\n\n\nm_hurdle\n15\n24330.41\n24426.27\n-12150.20\n24300.41\nNA\nNA\nNA\n\n\nm_hurdle_int\n16\n24332.07\n24434.32\n-12150.03\n24300.07\n0.3409581\n1\n0.5592767\n\n\n\n\n\n\n\nThe likelihood-ratio comparison gave χ²(1) = 0.34, p = 0.559.\nThe interaction will be probed regardless of the significance of this test. Probing examines the association with chronic conditions within each insurance group and the differences between insurance groups at selected values of chronic conditions.\nAdding the chronic conditions × insurance interaction did not significantly improve model fit. The estimated interaction was negative, which was the opposite of the predicted direction, but there was insufficient evidence that the count-component association between chronic conditions and physician visits differed by insurance status. AIC and BIC also favored the simpler additive model. The interaction model was still retained for probing, since this assignment requires this. This does not imply that it was preferred as the final model."
+  },
+  {
+    "objectID": "index.html#plot-predicted-counts",
+    "href": "index.html#plot-predicted-counts",
+    "title": "Lab 5: Count Regression",
+    "section": "6.4 Plot predicted counts",
+    "text": "6.4 Plot predicted counts\n\n\n\n\n\nPredicted physician visits by chronic conditions and private insurance, incorporating both hurdle-model components.\n\n\n\n\nThe plot shows predicted physician visits across chronic conditions for respondents with and without private insurance. Predictions incorporate both the probability of having any visits and the expected positive visit count. Other predictors are held at their reference categories or means."
+  },
+  {
+    "objectID": "index.html#probe-the-interaction",
+    "href": "index.html#probe-the-interaction",
+    "title": "Lab 5: Count Regression",
+    "section": "6.5 Probe the interaction",
+    "text": "6.5 Probe the interaction\n\nSimple slopes of chronic conditions within insurance groups\n\n\n insurance chronic.trend     SE  df asymp.LCL asymp.UCL z.ratio p.value\n no                0.160 0.0247 Inf     0.111     0.208   6.462 &lt;0.0001\n yes               0.143 0.0144 Inf     0.115     0.172   9.945 &lt;0.0001\n\nResults are averaged over the levels of: health, gender \nConfidence level used: 0.95 \n\n\n\n\nCompare the two slopes\n\n\n contrast estimate     SE  df asymp.LCL asymp.UCL z.ratio p.value\n no - yes   0.0164 0.0282 Inf   -0.0388    0.0717   0.583  0.5597\n\nResults are averaged over the levels of: health, gender \nConfidence level used: 0.95 \n\n\nThe simple slopes describe the chronic-condition association within each insurance group on the count-component log scale. The slope comparison tests whether those two slopes differ. It does not test the interaction in the model’s zero component, which was kept unchanged.\nThe count-component slope for chronic conditions was positive in both insurance groups. But, the difference between the slopes was not statistically significant, consistent with the likelihood-ratio test of the interaction. The positive sign of the slope comparison contrasts with the negative interaction coefficient because the comparison subtracts the insured slope from the “without private insurance” slope, whereas the model coefficient uses the opposite direction. So, the estimates have opposite signs but the same standard error and two-sided p-value.\n\n\nSimple effects of insurance at selected chronic-condition values\n\n\nchronic = 0.192:\n contrast estimate     SE  df asymp.LCL asymp.UCL z.ratio p.value\n no - yes   -0.158 0.0647 Inf    -0.285   -0.0317  -2.450  0.0143\n\nchronic = 1.542:\n contrast estimate     SE  df asymp.LCL asymp.UCL z.ratio p.value\n no - yes   -0.136 0.0446 Inf    -0.224   -0.0489  -3.055  0.0022\n\nchronic = 2.892:\n contrast estimate     SE  df asymp.LCL asymp.UCL z.ratio p.value\n no - yes   -0.114 0.0519 Inf    -0.216   -0.0124  -2.199  0.0279\n\nResults are averaged over the levels of: health, gender \nResults are given on the log (not the response) scale. \nConfidence level used: 0.95"
+  },
+  {
+    "objectID": "index.html#report-the-simple-effects-in-a-table",
+    "href": "index.html#report-the-simple-effects-in-a-table",
+    "title": "Lab 5: Count Regression",
+    "section": "6.6 Report the simple effects in a table",
+    "text": "6.6 Report the simple effects in a table\n\n\n\n\n\n\n\n\nSimple Effects of Private Insurance\n\n\nHurdle negative binomial count component\n\n\nProbing level\nChronic conditions\nContrast\nLog contrast\nSE\nz\np\n\n\n\n\n-1 SD\n0.192\nno - yes\n−0.158\n0.065\n−2.450\n0.014\n\n\nMean\n1.542\nno - yes\n−0.136\n0.045\n−3.055\n0.002\n\n\n+1 SD\n2.892\nno - yes\n−0.114\n0.052\n−2.199\n0.028\n\n\n\nContrasts are No - Yes. Tests are computed on the count-component log scale. Each probing value is treated as a separate comparison family.\n\n\n\n\n\n\n\n\n\nComparing emmeans results with the prediction plot\nThe emmeans analyses averaged over health and gender, whereas the ggeffects plot held non-focal categorical predictors at their reference levels. For comparisons on the same count-component log scale, these additive control-variable contributions cancel from the insurance contrast because they do not interact with insurance. However, the plotted predictions also combined the zero and count components, while the simple-effects analysis used only the count component. So, differences between the plot and these results reflect both the treatment of control variables and the model quantity being estimated. The count-component log contrasts should not be interpreted as contrasts in overall expected visits."
+  },
+  {
+    "objectID": "index.html#interpret-the-interaction",
+    "href": "index.html#interpret-the-interaction",
+    "title": "Lab 5: Count Regression",
+    "section": "6.7 Interpret the interaction",
+    "text": "6.7 Interpret the interaction\nThere was insufficient evidence that the count-component association between chronic conditions and physician visits differed by private insurance status. Adding the interaction did not significantly improve fit, χ²(1) = 0.341, p = 0.559. The chronic-condition slopes were positive in both insurance groups, but their difference was not statistically significant.\nSimple-effects comparisons indicated that respondents without private insurance had a lower count-component log parameter than those with insurance at low chronic conditions (log contrast = -0.158, p = 0.014), average chronic conditions (log contrast = -0.136, p = 0.002), and high chronic conditions (log contrast = -0.114, p = 0.028). These tests were not adjusted across the three probing values. The estimated log-scale difference was largest at the low probing value and smallest at the high value, but the non-significant interaction does not support a reliable change in the group difference as chronic conditions increase.\nOverall, the results suggest an insurance-group difference in the count component instead of clear evidence of moderation. The original prediction of a stronger chronic-condition slope among respondents with private insurance was not supported. Still, interpretation remains cautious because the selected model retained residual-fit limitations."
+  },
+  {
+    "objectID": "index.html#results",
+    "href": "index.html#results",
+    "title": "Lab 5: Count Regression",
+    "section": "7.1 Results",
+    "text": "7.1 Results\nPhysician visits had a mean of 5.77 and a variance of 45.69, with 15.50% of respondents reporting no visits. The full Poisson model showed pronounced overdispersion (dispersion ratio = 7.246, p &lt; .001) and under predicted the number of zeros (observed-to-simulated zero ratio = 14.906, p &lt; .001). The negative-binomial model fit significantly better than the Poisson model, χ²(1) = 12129.08, p &lt; .001. The NB2 dispersion test was no longer significant (dispersion ratio = 1.046, p = .392), but the model still under predicted zeros (observed-to-simulated zero ratio = 1.104, p = .004), supporting consideration of a separate zero component. Among the NB2, zero-inflated negative-binomial, and hurdle negative-binomial candidates, the hurdle model had the lowest BIC (24426.27), compared with 24436.63 for the zero-inflated model and 24521.03 for NB2, and was carried forward. Still, its residual diagnostics indicated remaining overdispersion (dispersion ratio = 1.148, p = .008) and residuals that differed significantly from the expected uniform distribution (D = 0.029, p &lt; .001). So, The hurdle model was the best-supported candidate among those considered, instead of it being a fully adequate model.\nIn the selected additive hurdle negative-binomial model, greater numbers of chronic conditions (b = 0.148, 95% CI [0.123, 0.172], p &lt; .001), poor health relative to the reference health category (b = 0.383, 95% CI [0.287, 0.478], p &lt; .001), more years of schooling (b = 0.021, 95% CI [0.012, 0.030], p &lt; .001), and private insurance (b = 0.130, 95% CI [0.045, 0.216], p = .003) were associated with higher log-scale count-component parameters, while adjusting for the other predictors. Excellent health was associated with a lower count-component parameter (b = -0.368, 95% CI [-0.501, -0.236], p &lt; .001), whereas the female–male difference was not statistically significant (b = 0.056, 95% CI [-0.008, 0.121], p = .088). In the zero component, more chronic conditions (b = -0.558, 95% CI [-0.647, -0.470], p &lt; .001), female gender (b = -0.401, 95% CI [-0.573, -0.230], p &lt; .001), more schooling (b = -0.058, 95% CI [-0.082, -0.035], p &lt; .001), and private insurance (b = -0.747, 95% CI [-0.944, -0.550], p &lt; .001) were associated with lower odds of reporting zero physician visits. Excellent health was associated with higher odds of zero visits (b = 0.309, 95% CI [0.029, 0.588], p = .030), whereas poor health was not significantly associated with the odds of zero visits (b = -0.050, 95% CI [-0.363, 0.263], p = .754). Count-component coefficients describe the log-scale parameter of the truncated negative-binomial distribution, instead of effects on overall expected physician visits.\nAdding the chronic conditions × private insurance interaction to the count component did not significantly improve model fit, χ²(1) = 0.341, p = .559. The count-component log-scale slope for chronic conditions was positive for respondents without private insurance (b = 0.160, 95% CI [0.111, 0.208], p &lt; .001) and for those with private insurance (b = 0.143, 95% CI [0.115, 0.172], p &lt; .001). Pointwise comparisons indicated lower count-component log parameters for “without private insurance” than respondents with private insurance at low chronic conditions (no − yes log contrast = -0.158, p = .014), average chronic conditions (log contrast = -0.136, p = .002), and high chronic conditions (log contrast = -0.114, p = .028). These comparisons were not adjusted across the three probing values. The estimated log-scale insurance difference was largest at the low probing value and smallest at the high probing value, but remained statistically significant at all three values. However, the non-significant interaction did not support a reliable difference between the chronic-condition slopes. The prediction of a stronger positive association among insured respondents was therefore not supported. So, the additive hurdle model was retained."
+  },
+  {
+    "objectID": "index.html#discussion",
+    "href": "index.html#discussion",
+    "title": "Lab 5: Count Regression",
+    "section": "7.2 Discussion",
+    "text": "7.2 Discussion\nThe findings suggest that chronic conditions and self-perceived health were important correlates of physician visits. More chronic conditions were associated with a higher count-component parameter and lower odds of reporting no visits, suggesting associations with both whether respondents visited a physician and the positive-count process. Compared with average health, poor health was associated with a higher count-component parameter, whereas excellent health was associated with a lower count-component parameter and higher odds of reporting no visits. Together, these patterns are consistent with greater healthcare use among respondents with greater health needs. However, coefficient magnitudes should not be used alone to rank the importance of predictors because the predictors have different measurement scales.\nPrivate insurance and education were also associated with both components of physician use. Respondents with private insurance and those with more schooling had higher count-component parameters and lower odds of zero visits, holding the other predictors constant. Women had lower odds of zero visits than men, but the count-component gender difference was not statistically significant. There was insufficient evidence that private insurance moderated the association between chronic conditions and the count component. Although insurance-group differences were detected at each selected chronic-condition value, those differences did not establish that the chronic-condition slopes differed between groups.\nMany limitations should be considered when interpreting these findings. The analysis was observational, so the associations do not establish causal effects. The selected model adjusted only for the included predictors. Other factors, such as income and access to care, could contribute to the observed associations. The data concern older adults surveyed in the United States in the late 1980s, which limits generalization to younger populations and contemporary healthcare settings. Most importantly, although the hurdle negative-binomial model was the best-supported candidate among those considered, its residual diagnostics still indicated overdispersion and residuals that differed significantly from the expected uniform distribution. So, we should interpret its standard errors, confidence intervals, and p-values cautiously. The simple-effects tests were also pointwise comparisons without adjustment across the three probing values. Finally, count-component coefficients describe the truncated distribution’s log-scale parameter, not overall expected visits, which depend on both hurdle components."
+  },
+  {
+    "objectID": "index.html#disclosure-of-generative-ai-use",
+    "href": "index.html#disclosure-of-generative-ai-use",
+    "title": "Lab 5: Count Regression",
+    "section": "Disclosure of generative AI use",
+    "text": "Disclosure of generative AI use\nI used Perplexity to help generate, understand, and revise code for this assignment. This included assistance with model comparisons, residual diagnostics, interaction probing, tables, and inline reporting.I also used it to help explain and/or revise portions of the results, interpretation and discussion. The AI Prompt Appendix records the prompts used for this assignment."
+  },
+  {
+    "objectID": "index.html#ai-prompt-appendix",
+    "href": "index.html#ai-prompt-appendix",
+    "title": "Lab 5: Count Regression",
+    "section": "AI Prompt Appendix",
+    "text": "AI Prompt Appendix\nThe following prompts were submitted to Perplexity while completing this assignment. Prompts are reproduced verbatim and in chronological order.\n\nPrompt\n\nthis is what i got before adding the table and chart; # Select the six variables and set reference groups\n\ndata &lt;- NMES1988 |&gt;\n\ndplyr::select(visits, chronic, health, gender, school, insurance) |&gt;\n\nmutate(\n\nhealth = fct_relevel(health, \"average\"),\n\ngender = fct_relevel(gender, \"male\"),\n\ninsurance = fct_relevel(insurance, \"no\")\n\n)\n\nhead(data)\nvisits chronic  health gender school insurance\n1      5       2 average   male      6       yes\n2      1       2 average female     10       yes\n3     13       4    poor female     10        no\n4     16       2    poor   male      3       yes\n5      3       2 average female      6       yes\n6     17       5    poor female      7        no\nstr(data)\n'data.frame':4406 obs. of  6 variables:\n$ visits   : int  5 1 13 16 3 17 9 3 1 0 ...\n$ chronic  : int  2 2 4 2 2 5 0 0 0 0 ...\n$ health   : Factor w/ 3 levels \"average\",\"poor\",..: 1 1 2 2 1 2 1 1 1 1 ...\n..- attr(*, \"contrasts\")= num [1:3, 1:2] 1 0 0 0 0 1\n.. ..- attr(*, \"dimnames\")=List of 2\n.. .. ..$ : chr [1:3] \"poor\" \"average\" \"excellent\"\n.. .. ..$ : chr [1:2] \"poor\" \"excellent\"\n$ gender   : Factor w/ 2 levels \"male\",\"female\": 1 2 2 1 2 2 2 2 2 2 ...\n$ school   : int  6 10 10 3 6 7 8 8 8 8 ...\n$ insurance: Factor w/ 2 levels \"no\",\"yes\": 2 2 1 2 2 1 2 2 2 2 ...\nsummary(data)\nvisits          chronic            health        gender         school      insurance\nMin.   : 0.000   Min.   :0.000   average  :3509   male  :1778   Min.   : 0.00   no : 985\n1st Qu.: 1.000   1st Qu.:1.000   poor     : 554   female:2628   1st Qu.: 8.00   yes:3421\nMedian : 4.000   Median :1.000   excellent: 343                 Median :11.00\nMean   : 5.774   Mean   :1.542                                  Mean   :10.29\n3rd Qu.: 8.000   3rd Qu.:2.000                                  3rd Qu.:12.00\nMax.   :89.000   Max.   :8.000                                  Max.   :18.00\n\nlevels(data$health)\n \"average\"   \"poor\"      \"excellent\"\nlevels(data$gender)\n \"male\"   \"female\"\nlevels(data$insurance)\n \"no\"  \"yes\"\n\n\nPrompt\ni got this but i want to understand this so i know what to do next (image.png)\n\n\nPrompt\nPoisson comparisons:  summary(m0_pois)\nFamily: poisson  ( log )\nFormula:          visits ~ 1\nData: data\n\n      AIC       BIC    logLik -2*log(L)  df.resid\n39720.3   39726.7  -19859.2   39718.3      4405\n\nConditional model:\nEstimate Std. Error z value Pr(&gt;|z|)\n(Intercept) 1.753434   0.006269   279.7   &lt;2e-16 ***\n\nSignif. codes:  0 ‘’ 0.001 ‘’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1\n\nsummary(m1_pois)\nFamily: poisson  ( log )\nFormula:          visits ~ chronic\nData: data\n\n      AIC       BIC    logLik -2*log(L)  df.resid\n37546.9   37559.7  -18771.5   37542.9      4404\n\nConditional model:\nEstimate Std. Error z value Pr(&gt;|z|)\n(Intercept) 1.409165   0.010124  139.19   &lt;2e-16 ***\nchronic     0.197902   0.004065   48.69   &lt;2e-16 ***\n\nSignif. codes:  0 ‘’ 0.001 ‘’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1\n\nsummary(m2_pois)\nFamily: poisson  ( log )\nFormula:          visits ~ chronic + health + gender + school + insurance\nData: data\n\n      AIC       BIC    logLik -2*log(L)  df.resid\n36597.0   36641.7  -18291.5   36583.0      4399\n\nConditional model:\nEstimate Std. Error z value Pr(&gt;|z|)\n(Intercept)      1.244732   0.028415   43.81   &lt;2e-16 ***\nchronic          0.168793   0.004471   37.75   &lt;2e-16 ***\nhealthpoor      -0.318204   0.017479  -18.20   &lt;2e-16 ***\nhealthexcellent -0.697249   0.034267  -20.35   &lt;2e-16 ***\ngenderfemale     0.108015   0.012943    8.35   &lt;2e-16 ***\nschool           0.025754   0.001843   13.97   &lt;2e-16 ***\ninsuranceyes     0.216007   0.016872   12.80   &lt;2e-16 ***\n\nSignif. codes:  0 ‘’ 0.001 ‘’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1\n\npois_comparison\nData: data\nModels:\nm0_pois: visits ~ 1, zi=~0, disp=~1\nm1_pois: visits ~ chronic, zi=~0, disp=~1\nm2_pois: visits ~ chronic + health + gender + school + insurance, zi=~0, disp=~1\nDf   AIC   BIC logLik deviance   Chisq Chi Df Pr(&gt;Chisq)\nm0_pois  1 39720 39727 -19859    39718\nm1_pois  2 37547 37560 -18772    37543 2175.43      1  &lt; 2.2e-16 ***\nm2_pois  7 36597 36642 -18292    36583  959.92      5  &lt; 2.2e-16 ***\n\nSignif. codes:  0 ‘’ 0.001 ‘’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1\n\n\nPrompt\nto be specific i replaced the setup chunk in the load packages header. is this okay?\n\n\nPrompt\nsummary(m2_pois)\nFamily: poisson  ( log )\nFormula:          visits ~ chronic + health + gender + school + insurance\nData: data\n\n      AIC       BIC    logLik -2*log(L)  df.resid\n36597.0   36641.7  -18291.5   36583.0      4399\n\nConditional model:\nEstimate Std. Error z value Pr(&gt;|z|)\n(Intercept)      0.926527   0.025069   36.96   &lt;2e-16 ***\nchronic          0.168793   0.004471   37.75   &lt;2e-16 ***\nhealthpoor       0.318205   0.017479   18.20   &lt;2e-16 ***\nhealthexcellent -0.379045   0.030291  -12.51   &lt;2e-16 ***\ngenderfemale     0.108014   0.012943    8.35   &lt;2e-16 ***\nschool           0.025754   0.001843   13.97   &lt;2e-16 ***\ninsuranceyes     0.216007   0.016872   12.80   &lt;2e-16 ***\n\nSignif. codes:  0 ‘’ 0.001 ‘’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1\n\npois_comparison\nData: data\nModels:\nm0_pois: visits ~ 1, zi=~0, disp=~1\nm1_pois: visits ~ chronic, zi=~0, disp=~1\nm2_pois: visits ~ chronic + health + gender + school + insurance, zi=~0, disp=~1\nDf   AIC   BIC logLik deviance   Chisq Chi Df Pr(&gt;Chisq)\nm0_pois  1 39720 39727 -19859    39718\nm1_pois  2 37547 37560 -18772    37543 2175.43      1  &lt; 2.2e-16 ***\nm2_pois  7 36597 36642 -18292    36583  959.92      5  &lt; 2.2e-16 ***\n\nSignif. codes:  0 ‘’ 0.001 ‘’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1\n\n\nPrompt\ndisp_pois\n\nDHARMa nonparametric dispersion test via sd of residuals fitted vs. simulated\n\ndata:  simulationOutput\ndispersion = 7.2457, p-value &lt; 2.2e-16\nalternative hypothesis: two.sided\n\nzi_pois\n\nDHARMa zero-inflation test via comparison to expected zeros with simulation under H0\n= fitted model\n\ndata:  simulationOutput\nratioObsSim = 14.906, p-value &lt; 2.2e-16\nalternative hypothesis: two.sided\n\n\nPrompt\nis it normal that my full poisson model shows overdispersion and more zeroes than it predicts?\n\n\nPrompt\nthe last thing i did was this ## Test for dispersion and excess zeros\n\n{r}\n#| label: poisson-diagnostic-tests\n\ndisp_pois &lt;- testDispersion(res_pois)\nzi_pois &lt;- testZeroInflation(res_pois)\n\ndisp_pois\nzi_pois\n\n\nPrompt\nlrt_zinb\nData: data\nModels:\nm_nb: visits ~ chronic + health + gender + school + insurance, zi=~0, disp=~1\nm_zinb: visits ~ chronic + health + gender + school + insurance, zi=~chronic + health + gender + school + insurance, disp=~1\nDf   AIC   BIC logLik deviance  Chisq Chi Df Pr(&gt;Chisq)\nm_nb    8 24470 24521 -12227    24454\nm_zinb 15 24341 24437 -12155    24311 143.14      7  &lt; 2.2e-16 ***\n\nSignif. codes:  0 ‘’ 0.001 ‘’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1\n\nzero_aic\ndf      AIC\nm_nb      8 24469.91\nm_zinb   15 24340.77\nm_hurdle 15 24330.41\nzero_bic\ndf      BIC\nm_nb      8 24521.03\nm_zinb   15 24436.63\nm_hurdle 15 24426.27\n\n\nPrompt\nZINB: remaining checks\ndisp_zinb\n\nDHARMa nonparametric dispersion test via sd of residuals fitted vs. simulated\n\ndata:  simulationOutput\ndispersion = 1.1831, p-value &lt; 2.2e-16\nalternative hypothesis: two.sided\n\nzi_zinb\n\nDHARMa zero-inflation test via comparison to expected zeros with simulation under H0\n= fitted model\n\ndata:  simulationOutput\nratioObsSim = 0.95735, p-value = 0.204\nalternative hypothesis: two.sided\n\ntestQuantiles(res_zinb, plot = FALSE)\n\nTest for location of quantiles via qgam\n\ndata:  res_zinb\np-value = 0.0004038\nalternative hypothesis: both\n\nHurdle: uniformity and quantile checks\ntestUniformity(res_hurdle, plot = FALSE)\n\nAsymptotic one-sample Kolmogorov-Smirnov test\n\ndata:  simulationOutput$scaledResiduals\nD = 0.029434, p-value = 0.0009672\nalternative hypothesis: two-sided\n\ntestQuantiles(res_hurdle, plot = FALSE)\nWarning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L = G$L,  :\nFitting terminated with step failure - check results carefully\nTest for location of quantiles via qgam\n\ndata:  res_hurdle\np-value = 0.001523\nalternative hypothesis: both\n\n\nPrompt\nhow do i confirm convergence checks\n\n\nPrompt\nHelp understand these summaries:  slopes_summary\ninsurance chronic.trend     SE  df asymp.LCL asymp.UCL z.ratio p.value\nno                0.160 0.0247 Inf     0.111     0.208   6.462 &lt;0.0001\nyes               0.143 0.0144 Inf     0.115     0.172   9.945 &lt;0.0001\n\nResults are averaged over the levels of: health, gender\nConfidence level used: 0.95\n\nsummary(slope_comparison, infer = c(TRUE, TRUE))\ncontrast estimate     SE  df asymp.LCL asymp.UCL z.ratio p.value\nno - yes   0.0164 0.0282 Inf   -0.0388    0.0717   0.583  0.5597\n\nResults are averaged over the levels of: health, gender\nConfidence level used: 0.95\n\n\nPrompt\nchronic_values\n 0.1923565 1.5419882 2.8916199\n\nsimple_effects_summary\nchronic = 0.192:\ncontrast estimate     SE  df asymp.LCL asymp.UCL z.ratio p.value\nno - yes   -0.158 0.0647 Inf    -0.285   -0.0317  -2.450  0.0143\n\nchronic = 1.542:\ncontrast estimate     SE  df asymp.LCL asymp.UCL z.ratio p.value\nno - yes   -0.136 0.0446 Inf    -0.224   -0.0489  -3.055  0.0022\n\nchronic = 2.892:\ncontrast estimate     SE  df asymp.LCL asymp.UCL z.ratio p.value\nno - yes   -0.114 0.0519 Inf    -0.216   -0.0124  -2.199  0.0279\n\nResults are averaged over the levels of: health, gender\nResults are given on the log (not the response) scale.\nConfidence level used: 0.95\n\n\nPrompt\nwhat should i see from this # Outcome descriptives for the model-selection paragraph\n\nprint(visits_summary)\nn     mean variance proportion_zero maximum\n1 4406 5.774399 45.68712       0.1550159      89\n\nCount-component results\nprint(\n\ncount_results |&gt;\n\ndplyr::select(term, estimate, conf.low, conf.high, p.value),\n\nn = Inf,\n\nwidth = Inf\n\n)\n\nA tibble: 7 × 5\n  term            estimate conf.low conf.high  p.value\n&lt;chr&gt;              &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;\n1 (Intercept)       1.14    1.01       1.26   3.95e-70\n2 chronic           0.148   0.123      0.172  2.07e-31\n3 healthpoor        0.383   0.287      0.478  4.80e-15\n4 healthexcellent  -0.368  -0.501     -0.236  4.83e- 8\n5 genderfemale      0.0565 -0.00850    0.121  8.85e- 2\n6 school            0.0212  0.0121     0.0303 4.79e- 6\n7 insuranceyes      0.130   0.0452     0.216  2.71e- 3\n\nZero-component results\nprint(\n\nzero_results |&gt;\n\ndplyr::select(term, estimate, conf.low, conf.high, p.value),\n\nn = Inf,\n\nwidth = Inf\n\n)\n\nA tibble: 7 × 5\n  term            estimate conf.low conf.high  p.value\n&lt;chr&gt;              &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;\n1 (Intercept)       0.327    0.0460    0.608  2.26e- 2\n2 chronic          -0.558   -0.647    -0.470  2.79e-35\n3 healthpoor       -0.0500  -0.363     0.263  7.54e- 1\n4 healthexcellent   0.309    0.0294    0.588  3.03e- 2\n5 genderfemale     -0.401   -0.573    -0.230  4.33e- 6\n6 school           -0.0582  -0.0817   -0.0348 1.13e- 6\n7 insuranceyes     -0.747   -0.944    -0.550  1.14e-13\n\n\nPrompt\nDHARMa::testDispersion(res_hurdle, plot = FALSE)\n\nDHARMa nonparametric dispersion test via sd of residuals fitted vs. simulated\n\ndata:  simulationOutput\ndispersion = 1.1477, p-value = 0.008\nalternative hypothesis: two.sided\n\nDHARMa::testUniformity(res_hurdle, plot = FALSE)\n\nAsymptotic one-sample Kolmogorov-Smirnov test\n\ndata:  simulationOutput$scaledResiduals\nD = 0.029434, p-value = 0.0009672\nalternative hypothesis: two-sided"
+  }
+]
