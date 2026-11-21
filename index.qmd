@@ -54,7 +54,7 @@ The outcome is the number of physician office visits. Predictors are
 the number of chronic conditions, self-perceived health, gender,
 years of education, and private insurance coverage.
 
-The reference groups are average health, male, and no insurance.
+The reference groups are average health, male, and no private insurance.
 
 ## Explore the data
 
@@ -183,6 +183,29 @@ pois_comparison |>
     title = "Comparison of Nested Poisson Models"
   )
 ```
+
+Adding chronic conditions to the intercept-only Poisson model
+significantly improved fit,
+χ²(`r pois_comparison[2, "Chi Df"]`) =
+`r round(pois_comparison[2, "Chisq"], 2)`,
+`r if (pois_comparison[2, "Pr(>Chisq)"] < .001) "*p* < .001" else paste0("*p* = ", sprintf("%.3f", pois_comparison[2, "Pr(>Chisq)"]))`.
+This comparison shows that including chronic conditions improves
+the model relative to predicting the same expected number of visits
+for every respondent.
+
+Adding health, gender, schooling, and private insurance to the
+chronic-only model further improved fit,
+χ²(`r pois_comparison[3, "Chi Df"]`) =
+`r round(pois_comparison[3, "Chisq"], 2)`,
+`r if (pois_comparison[3, "Pr(>Chisq)"] < .001) "*p* < .001" else paste0("*p* = ", sprintf("%.3f", pois_comparison[3, "Pr(>Chisq)"]))`.
+This comparison tests the additional predictors collectively rather than stating that every added predictor is individually significant.
+
+The full model M2 was therefore selected as the preferred model
+among the three Poisson candidates. However, improved fit relative
+to simpler Poisson models does not establish that M2 adequately
+describes the data. Its dispersion and ability to reproduce the
+observed zeros are evaluated next using DHARMa diagnostics.
+
 # Part 3: Evaluate the Poisson model
 
 ## Simulate residuals
@@ -214,6 +237,15 @@ zi_pois <- testZeroInflation(res_pois)
 disp_pois
 zi_pois
 ```
+
+The Poisson DHARMa QQ plot did not follow the diagonal reference line, indicating that the simulated residuals did not follow the expected uniform distribution.
+The uniformity, dispersion, and outlier tests were significant.
+In the residual-versus-predicted panel, the red quantile curves
+departed systematically from their horizontal reference lines,
+and the combined adjusted quantile test was significant.
+Together, these patterns show that the full Poisson model
+did not reproduce the observed outcome distribution.
+
 ## Interpret the Poisson diagnostics
 
 The full Poisson model showed significant overdispersion
@@ -669,14 +701,26 @@ It does not test the interaction in the model's zero component,
 which was kept unchanged.
 
 The count-component slope for chronic conditions was positive
-in both insurance groups. But, the difference between the
-slopes was not statistically significant, consistent with the
-likelihood-ratio test of the interaction. The positive sign of
-the slope comparison contrasts with the negative interaction
-coefficient because the comparison subtracts the insured slope
-from the "without private insurance" slope, whereas the model coefficient uses
-the opposite direction. So, the estimates have opposite
-signs but the same standard error and two-sided p-value.
+in both insurance groups. However, the difference between the
+slopes was not statistically significant, which is consistent with the
+likelihood-ratio test of the interaction.
+
+Because private insurance has only two levels, there are only
+two chronic-condition slopes to compare. With "no" as the
+reference category, the chronic × insurance interaction
+coefficient equals the slope for respondents with private
+insurance minus the slope for respondents without private
+insurance. The pairs() comparison uses the opposite order
+(no − yes), so its estimate has the opposite sign but the same
+standard error and two-sided p-value as the interaction
+coefficient's Wald test. So, both Wald tests test the
+same null hypothesis, being that the two count-component log-scale
+slopes are equal.
+
+The likelihood-ratio test also evaluates whether adding this
+interaction improves fit, but it uses a different testing
+method, so its p-value do not need to exactly match the Wald
+test's p-value.
 
 ### Simple effects of insurance at selected chronic-condition values
 
@@ -1109,7 +1153,7 @@ components.
 ## Disclosure of generative AI use
 
 I used Perplexity to help generate, understand, and revise code for this assignment. This included assistance with model comparisons, residual diagnostics, interaction
-probing, tables, and inline reporting.I also used it to help explain and/or revise portions of the results, interpretation and discussion. The AI Prompt Appendix records
+probing, tables, and inline reporting. I also used it to help explain and/or revise portions of the results, interpretation and discussion. The AI Prompt Appendix records
 the prompts used for this assignment.
 
 ## AI Prompt Appendix
